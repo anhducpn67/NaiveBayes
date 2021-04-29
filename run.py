@@ -13,8 +13,8 @@ def main():
     container = PreprocessTestData(container).execute()
     container = PreprocessPredictData(container).execute()
     my_model = Model(container)
-    # my_model.evaluate_model()
-    my_model.predict()
+    my_model.evaluate_model()
+    # my_model.predict()
 
 
 if __name__ == '__main__':

@@ -42,20 +42,27 @@ class Model:
                 print("Positive review")
 
     def evaluate_model(self):
-        numbers_true_pos_predicts = 0
-        numbers_true_neg_predicts = 0
+        true_positives = 0
+        true_negatives = 0
         numbers_test_data = project_config.NUMBERS_TEST_DATA_EACH_CLASS * 2
         for sent in self.test_pos_examples:
             predict = self.classify_sent(sent)
             if predict == 1:
-                numbers_true_pos_predicts += 1
+                true_positives += 1
         for sent in self.test_neg_examples:
             predict = self.classify_sent(sent)
             if predict == 0:
-                numbers_true_neg_predicts += 1
-        print("True positive:", numbers_true_pos_predicts)
-        print("True negative:", numbers_true_neg_predicts)
-        print("Score:", ((numbers_true_neg_predicts + numbers_true_pos_predicts) / numbers_test_data) * 100)
+                true_negatives += 1
+        false_positives = project_config.NUMBERS_TEST_DATA_EACH_CLASS - true_positives
+        false_negative = project_config.NUMBERS_TEST_DATA_EACH_CLASS - true_negatives
+        precision = true_positives / (true_positives + false_positives)
+        recall = true_positives / (true_positives + false_negative)
+        F1_Score = (2 * precision * recall) / (precision + recall)
+        print("True positive:", true_positives)
+        print("False positive:", false_positives)
+        print("True negative:", true_negatives)
+        print("False negative:", false_negative)
+        print("F1 Score:", F1_Score * 100)
 
     def execute(self):
         return self.container
